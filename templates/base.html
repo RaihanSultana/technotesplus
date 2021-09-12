@@ -1,0 +1,51 @@
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    {% block title %}
+
+    {% endblock %}
+    <link rel="fav icon" type="image/jpg" href="#"/>
+
+    <!-- Import CSS -->
+    {% include "base/css.html" %}
+
+    {% block extra_css %}
+    {% endblock %}
+
+    </head>
+    <body>
+    <!-- Header -->
+    {% include "base/navbar.html" %}
+    <!-- End Header -->
+
+    <!-- Sidebar and Main Content -->
+<!--{#    <div class="d-flex">#}-->
+    <!-- sidebar -->
+
+    <!-- End sidebar -->
+
+    <!-- main Content -->
+
+    {% for message in messages %}
+        {{message}}
+    {% endfor %}
+
+    {% block content %}
+    {% endblock %}
+
+    <!-- Footer Section -->
+    {% include "base/footer.html" %}
+    <!-- End Footer -->
+
+    <!-- End main Content -->
+    <!-- End Sidebar and Main Content -->
+
+    {% include "base/js.html" %}
+
+    {% block extra_js %}
+    {% endblock %}
+
+    </body>
+    </html>

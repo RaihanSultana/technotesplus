@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{% endblock %}
+
+{% block content %}
+<div class="container mt-3">
+    <form method="POST" action="{% url 'register' %}">
+        {% csrf_token %}
+        <div class="form-group p-2">
+            <label>Username</label>
+            <input type="username" name="username" class="form-control" placeholder="Enter username">
+        </div>
+        <div class="form-group p-2">
+            <label>Password</label>
+            <input type="password" name="password1" class="form-control" placeholder="Password">
+        </div>
+        <div class="form-group p-2">
+            <label>Confirm Password</label>
+            <input type="password" name="password2" class="form-control" placeholder="Confirm Password">
+        </div>
+        <button type="submit" class="btn btn-primary m-2">Submit</button>
+    </form>
+</div>
+
+{% endblock %}
+
