@@ -46,10 +46,9 @@ def login_view(request):
     return render(request, 'login.html', {'form': form})
 
 
-
-# def logout_view(request):
-#     """
-#     user logout view
-#     """
-#     logout(request)
-#     return redirect('login')
+def logout_view(request):
+    """
+    user logout view
+    """
+    logout(request)
+    return redirect('login')

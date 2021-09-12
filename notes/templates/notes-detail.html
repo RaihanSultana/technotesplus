@@ -17,15 +17,84 @@
             </div>
 
             <div class="button-section m-2">
-                <button>Save</button>
+                <button type="submit" class="btn" style=" border-color: #43799d; color: #43799d;">Save</button>
+                <button type="button" class="btn text-light" style=" border-color: #43799d; background-color:#43799d;"
+                        data-bs-toggle="modal"
+                        data-bs-target="#sharemodal" data-note-id="{{note.id}}">Share
+                </button>
             </div>
         </form>
+        <div></div>
     </div>
+
+    <!-- share modal: 'sharemodal' -->
+    <div
+            class="modal fade"
+            id="sharemodal"
+            tabindex="-1"
+            aria-labelledby="sharemodalLabel"
+            aria-hidden="true">
+        <div class="modal-dialog ">
+            <div class="modal-content">
+                <div class="modal-header default-modal" style="background-color:#43799d;">
+                    <h6>Add User</h6>
+                    <button
+                            type="button"
+                            class="btn-close"
+                            data-bs-dismiss="modal"
+                            aria-label="Close"
+                    ></button>
+                </div>
+                <div class="default--modal-card ">
+                    <form method="POST" action="{% url 'notes:notes-share' %}" id="share-add">
+                        {% csrf_token %}
+                        <div class="modal-body">
+                            <input name="note_id" type="hidden">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <select name="users[]" class="form-control form-select" id="mselect" multiple
+                                                data-placeholder="Type User's username to share" style="overflow:visible;">
+                                            {% for user in users %}
+                                            <option value="{{ user.id }}">{{ user.username }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn--modal-submit">
+                                Submit
+                            </button>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- share modal end -->
 
 </div>
 {% endblock %}
 
 {% block extra_js %}
 <script type="text/javascript" src="{% static 'js/taginput.js' %}"></script>
+<script>
+    $('#mselect').chosen();
+
+// passing data to share modal
+$('#sharemodal').on('show.bs.modal', function(e) {
+console.log("here");
+
+    //get data-id attribute of the clicked element
+    var note_id = $(e.relatedTarget).data('note-id');
+
+    //populate the input
+    $(e.currentTarget).find('input[name="note_id"]').val(note_id);
+});
+</script>
 {% endblock %}
 

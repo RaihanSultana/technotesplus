@@ -2,7 +2,11 @@ from django.shortcuts import render, redirect, reverse
 from django.views.generic import ListView, CreateView, DetailView, UpdateView, View
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
+from django.contrib.auth import get_user_model
+from django.db.models import Q
 from .models import Tag, Note
+
+User = get_user_model()
 
 
 class NotesCreateView(LoginRequiredMixin, View):
@@ -37,14 +41,22 @@ class NotesListView(LoginRequiredMixin, ListView):
     paginate_by = 10
     context_object_name = "notes"
 
+    def get_queryset(self):
+        # user can see only his own note or notes that is shared with him
+        notes = Note.objects.filter(Q(created_by=self.request.user) | Q(shared_user=self.request.user))
+        return notes
+
 
 class NotesDetailView(LoginRequiredMixin, View):
     template_name = 'notes-detail.html'
 
     def get(self, request, *args, **kwargs):
         note = Note.objects.get(pk=kwargs['pk'])
+        # filter only non admin
+        users = User.objects.filter(is_staff=False)
         context = {
-            'note': note
+            'note': note,
+            'users': users,
         }
         return render(request, self.template_name, context)
 
@@ -62,5 +74,17 @@ class NotesDetailView(LoginRequiredMixin, View):
 def notes_delete_view(request, pk):
     notes_obj = Note.objects.get(pk=pk)
     notes_obj.delete()
+
+    return redirect('notes:notes-list')
+
+
+def notes_share_view(request):
+    note_id = request.POST.get('note_id')
+    note_obj = Note.objects.get(pk=note_id)
+    users = request.POST.getlist('users[]')
+    for user in users:
+        user_obj = User.objects.get(pk=int(user))
+        note_obj.shared_user.add(user_obj)
+        note_obj.save()
 
     return redirect('notes:notes-list')

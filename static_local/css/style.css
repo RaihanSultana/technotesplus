@@ -100,3 +100,7 @@ body{
     margin: 1%;
     padding: 1%;
 }
+
+.chosen-container{
+    width:100%;
+}

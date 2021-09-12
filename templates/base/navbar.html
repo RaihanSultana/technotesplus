@@ -6,6 +6,7 @@
             {% if request.user.is_authenticated %}
             <a href="{% url 'notes:notes-create' %}" class="text-decoration-none text-light"><div class="nav-item p-2">Create Notes</div></a>
             <a href="{% url 'notes:notes-list' %}" class="text-decoration-none text-light"><div class="nav-item p-2">View Notes</div></a>
+            <a href="{% url 'logout' %}" class="text-decoration-none text-light"><div class="nav-item p-2">Logout</div></a>
             <div class="nav-item p-2"><b>{{request.user.username}}</b></div>
             {% else %}
             <a href="{% url 'register' %}" class="text-decoration-none text-light"><div class="nav-item p-2">Create New Account</div></a>
