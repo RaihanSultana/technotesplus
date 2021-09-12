@@ -47,3 +47,20 @@ class NotesDetailView(LoginRequiredMixin, View):
             'note': note
         }
         return render(request, self.template_name, context)
+
+    def post(self, request, *args, **kwargs):
+        title = request.POST.get('title')
+        content = request.POST.get('content')
+
+        note_obj = Note.objects.get(pk=kwargs['pk'])
+        note_obj.title = title
+        note_obj.content = content
+        note_obj.save()
+        return redirect('notes:notes-list')
+
+
+def notes_delete_view(request, pk):
+    notes_obj = Note.objects.get(pk=pk)
+    notes_obj.delete()
+
+    return redirect('notes:notes-list')

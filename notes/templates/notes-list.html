@@ -10,8 +10,9 @@
         <div class="tab-content bg-transparent">
             <div id="note-full-container" class="note-has-grid row">
                 {% for note in notes %}
-                <a href="{% url 'notes:notes-detail' note.id %}" class="text-decoration-none"><div class="col-md-4 single-note-item all-category" style="">
-                    <div class="card card-body ">
+                <div class="col-md-4 single-note-item all-category" style="">
+                    <a href="{% url 'notes:notes-detail' note.id %}" class="text-decoration-none">
+                        <div class="card card-body ">
                         <span class="side-stick"></span>
                         <h5 class="note-title text-truncate w-75 mb-0" data-noteheading="{{note.title}}">
                             {{note.title}}</h5>
@@ -28,11 +29,12 @@
                         </div>
 
                         <div class="d-flex align-items-center pt-3">
-                            <span class="mr-1"><i class="fa fa-trash remove-note"></i></span>
+                            <a href="{% url 'notes:notes-delete' note.id %}"><span class="mr-1"><i class="fa fa-trash remove-note"></i></span></a>
 
                         </div>
                     </div>
-                </div></a>
+                        </a>
+                </div>
                 {% endfor %}
             </div>
         </div>
